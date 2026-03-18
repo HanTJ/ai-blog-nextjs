@@ -1,6 +1,8 @@
 import { getPostData, getAllPostIds } from '@/lib/posts';
 import Link from 'next/link';
 
+export const dynamicParams = false;
+
 // 1. 빌드 타임에 생성할 마크다운 파일들의 경로(slug)를 미리 정의합니다.
 export async function generateStaticParams() {
   const posts = getAllPostIds();
