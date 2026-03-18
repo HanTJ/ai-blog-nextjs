@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevLog | 기술 블로그",
-  description: "최신 기술 트렌드와 개발 경험을 공유하는 공간",
+  title: "TJ.HAN tech 블로그",
+  description: "기술적인 깊이와 사용자 경험을 고민하는 개발자 한태준의 블로그입니다.",
 };
 
 export default function RootLayout({
@@ -26,29 +26,44 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
-          <nav className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold tracking-tight text-slate-900 dark:text-white hover:text-blue-500 transition-colors">
-              DevLog<span className="text-blue-500">.</span>
+        <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-[#111111]/90 backdrop-blur-md border-b border-toss-border dark:border-[#222222]">
+          <nav className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <Link href="/" className="text-xl font-bold tracking-tight text-toss-gray-dark dark:text-white hover:opacity-80 transition-opacity">
+              TJ.HAN tech 블로그
             </Link>
-            <div className="flex gap-6 text-sm font-medium text-slate-600 dark:text-slate-400">
-              <Link href="/" className="hover:text-blue-500 transition-colors">Posts</Link>
-              <Link href="#" className="hover:text-blue-500 transition-colors">About</Link>
+            
+            <div className="flex items-center gap-2">
+              <button className="p-2 hover:bg-toss-bg-sub dark:hover:bg-white/10 rounded-lg transition-colors group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-toss-gray-medium dark:text-toss-gray-light group-hover:text-toss-blue">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.3-4.3"/>
+                </svg>
+              </button>
             </div>
           </nav>
         </header>
 
-        <main className="max-w-5xl mx-auto px-4 py-12 min-h-[calc(100vh-128px)]">
+        <main className="max-w-4xl mx-auto px-6 py-12 min-h-[calc(100vh-160px)]">
           {children}
         </main>
 
-        <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-12">
-          <div className="max-w-5xl mx-auto px-4 text-center">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              © {new Date().getFullYear()} DevLog. Built with Next.js & Tailwind CSS.
-            </p>
+        <footer className="border-t border-toss-border dark:border-[#222222] bg-white dark:bg-[#111111] py-16">
+          <div className="max-w-4xl mx-auto px-6">
+            <div className="flex flex-col gap-6">
+              <div className="flex gap-8 text-sm font-semibold text-toss-gray-medium dark:text-toss-gray-light">
+                <Link href="/" className="hover:text-toss-blue transition-colors">홈</Link>
+                <Link href="#" className="hover:text-toss-blue transition-colors">기술</Link>
+                <Link href="#" className="hover:text-toss-blue transition-colors">팀</Link>
+              </div>
+              <p className="text-sm text-toss-gray-light dark:text-toss-gray-medium">
+                © {new Date().getFullYear()} TJ.Han. All rights reserved. 
+                <br className="sm:hidden" />
+                <span className="hidden sm:inline"> | </span>
+                본 블로그의 모든 콘텐츠는 저작권법의 보호를 받습니다.
+              </p>
+            </div>
           </div>
         </footer>
       </body>

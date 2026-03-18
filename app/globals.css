@@ -5,59 +5,60 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-mono-font-family, monospace;
 
-  /* Tailwind CSS v4 스타일 변수 정의 */
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
-  --color-slate-950: #020617;
-  --color-blue-50: #eff6ff;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --color-blue-700: #1d4ed8;
-  --color-blue-900: #1e3a8a;
+  --color-toss-blue: #3182f6;
+  --color-toss-gray-dark: #333d4b;
+  --color-toss-gray-medium: #4e5968;
+  --color-toss-gray-light: #8b95a1;
+  --color-toss-bg: #ffffff;
+  --color-toss-bg-sub: #f9fafb;
+  --color-toss-border: #e5e8eb;
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --primary: #3b82f6;
-  --secondary: #64748b;
-  --border: #e2e8f0;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --background: #ffffff;
+  --foreground: #333d4b;
+  --primary: #3182f6;
+  --secondary: #4e5968;
+  --border: #e5e8eb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #020617;
-    --foreground: #f8fafc;
-    --card: #0f172a;
-    --card-foreground: #f8fafc;
-    --primary: #60a5fa;
-    --secondary: #94a3b8;
-    --border: #1e293b;
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
+    --background: #111111;
+    --foreground: #f9fafb;
+    --primary: #3182f6;
+    --secondary: #8b95a1;
+    --border: #222222;
   }
 }
 
-@layer base {
-  body {
-    @apply bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300 font-sans;
-  }
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Utilities */
-@layer utilities {
-  .glass {
-    @apply bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800;
-  }
+/* Toss Tech Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.prose {
+  max-width: 100%;
+}
+
+.toss-tag {
+  @apply px-3 py-1 text-sm font-medium rounded-md bg-toss-bg-sub text-toss-blue;
+}
+
+.toss-card {
+  @apply py-10 border-b border-toss-border last:border-b-0;
 }

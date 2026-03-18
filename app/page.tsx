@@ -1,73 +1,120 @@
 import Link from 'next/link';
 import { getSortedPostsData } from '@/lib/posts';
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; search?: string }>;
+}) {
   const allPostsData = getSortedPostsData();
+  const params = await searchParams;
+  const currentPage = parseInt(params.page || '1');
+  const searchQuery = params.search || '';
+  
+  // 검색 필터링
+  const filteredPosts = searchQuery
+    ? allPostsData.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : allPostsData;
+
+  // 페이지네이션 (4개씩)
+  const postsPerPage = 4;
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   return (
-    <div className="space-y-16">
-      {/* Hero Section */}
-      <section className="text-center space-y-4">
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-          Insights for <span className="text-blue-500">Developers</span>
+    <div className="space-y-12">
+      <div className="flex items-center justify-between mb-8 border-b border-toss-border dark:border-[#222222] pb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-toss-gray-dark dark:text-white">
+          전체 아티클
         </h1>
-        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          최신 기술 트렌드, 아키텍처, 그리고 효율적인 엔지니어링 경험을 공유합니다.
-        </p>
-      </section>
+        <span className="text-sm font-medium text-toss-gray-light dark:text-toss-gray-medium">
+          총 {filteredPosts.length}개
+        </span>
+      </div>
 
-      {/* Posts Grid */}
-      <section>
-        <div className="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Latest Posts</h2>
-          <span className="text-sm text-slate-500">{allPostsData.length} articles</span>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {allPostsData.map(({ id, date, title, description }) => (
-            <article 
-              key={id} 
-              className="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm hover:shadow-xl hover:border-blue-500/50 transition-all duration-300 flex flex-col"
-            >
-              <div className="mb-4 flex items-center gap-3">
-                <span className="px-3 py-1 text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full">
-                  Article
-                </span>
-                <time className="text-xs text-slate-400 dark:text-slate-500" dateTime={date}>
-                  {date}
-                </time>
-              </div>
-              
-              <Link href={`/${id}`} className="flex-1">
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors mb-3">
-                  {title}
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 line-clamp-2 text-sm leading-relaxed mb-6">
-                  {description}
-                </p>
+      <div className="divide-y divide-toss-border dark:divide-[#222222]">
+        {paginatedPosts.length > 0 ? (
+          paginatedPosts.map(({ id, date, title, description, tags }) => (
+            <article key={id} className="py-12 group">
+              <Link href={`/${id}`} className="block space-y-4">
+                <div className="space-y-3">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-toss-gray-dark dark:text-white group-hover:text-toss-blue transition-colors leading-tight">
+                    {title}
+                  </h2>
+                  <p className="text-lg text-toss-gray-medium dark:text-toss-gray-light line-clamp-2 leading-relaxed">
+                    {description}
+                  </p>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <time className="text-sm text-toss-gray-light dark:text-toss-gray-medium font-medium pr-2 border-r border-toss-border dark:border-[#222222]">
+                    {date}
+                  </time>
+                  {tags?.map((tag) => (
+                    <span 
+                      key={tag} 
+                      className="text-sm font-semibold text-toss-blue bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full transition-all group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </Link>
-              
-              <div className="flex items-center justify-between mt-auto pt-6 border-t border-slate-50 dark:border-slate-800">
-                <Link 
-                  href={`/${id}`}
-                  className="text-sm font-semibold text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 inline-flex items-center gap-1 group/link"
-                >
-                  Read full story
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="16" height="16" viewBox="0 0 24 24" 
-                    fill="none" stroke="currentColor" strokeWidth="2.5" 
-                    strokeLinecap="round" strokeLinejoin="round" 
-                    className="group-hover/link:translate-x-1 transition-transform"
-                  >
-                    <path d="M5 12h14m-7-7 7 7-7 7"/>
-                  </svg>
-                </Link>
-              </div>
             </article>
-          ))}
+          ))
+        ) : (
+          <div className="py-20 text-center">
+            <p className="text-toss-gray-medium dark:text-toss-gray-light text-lg">
+              검색 결과가 없습니다.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Pagination UI */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 pt-12">
+          {currentPage > 1 && (
+            <Link 
+              href={`/?page=${currentPage - 1}`}
+              className="px-4 py-2 text-sm font-bold text-toss-gray-medium dark:text-toss-gray-light hover:bg-toss-bg-sub dark:hover:bg-white/10 rounded-lg transition-colors border border-toss-border dark:border-[#222222]"
+            >
+              이전
+            </Link>
+          )}
+          
+          <div className="flex gap-2">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+              <Link
+                key={pageNum}
+                href={`/?page=${pageNum}`}
+                className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
+                  pageNum === currentPage
+                    ? "bg-toss-blue text-white shadow-lg shadow-blue-500/30"
+                    : "text-toss-gray-medium dark:text-toss-gray-light hover:bg-toss-bg-sub dark:hover:bg-white/10"
+                }`}
+              >
+                {pageNum}
+              </Link>
+            ))}
+          </div>
+
+          {currentPage < totalPages && (
+            <Link 
+              href={`/?page=${currentPage + 1}`}
+              className="px-4 py-2 text-sm font-bold text-toss-gray-medium dark:text-toss-gray-light hover:bg-toss-bg-sub dark:hover:bg-white/10 rounded-lg transition-colors border border-toss-border dark:border-[#222222]"
+            >
+              다음
+            </Link>
+          )}
         </div>
-      </section>
+      )}
     </div>
   );
 }
