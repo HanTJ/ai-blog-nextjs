@@ -6,6 +6,7 @@
   --font-mono: var(--font-geist-mono), ui-mono-font-family, monospace;
 
   --color-toss-blue: #3182f6;
+  --color-toss-blue-light: #e8f3ff;
   --color-toss-gray-dark: #333d4b;
   --color-toss-gray-medium: #4e5968;
   --color-toss-gray-light: #8b95a1;
@@ -37,28 +38,115 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
 }
 
-/* Toss Tech Typography */
+/* Toss Tech Typography & Layout */
 h1, h2, h3, h4, h5, h6 {
   color: var(--foreground);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
+/* MD Content Styling (Prose Enhancement) */
 .prose {
   max-width: 100%;
+  color: #333d4b;
+  line-height: 1.8;
+  font-size: 1.125rem;
 }
 
-.toss-tag {
-  @apply px-3 py-1 text-sm font-medium rounded-md bg-toss-bg-sub text-toss-blue;
+.prose h2 {
+  font-size: 1.875rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
 }
 
-.toss-card {
-  @apply py-10 border-b border-toss-border last:border-b-0;
+.prose h3 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--primary);
+  background-color: #f9fafb;
+  padding: 1.5rem 2rem;
+  font-style: normal;
+  color: #4e5968;
+  border-radius: 0 12px 12px 0;
+  margin: 2.5rem 0;
+}
+
+.prose code {
+  color: #3182f6;
+  background-color: #f2f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.prose code::before,
+.prose code::after {
+  content: "";
+}
+
+.prose pre {
+  background-color: #1a1b26 !important;
+  border-radius: 20px;
+  padding: 2rem !important;
+  margin: 2.5rem 0;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.prose pre code {
+  color: #e5e7eb;
+  background-color: transparent;
+  padding: 0;
+  font-weight: 400;
+  font-size: 0.95rem;
+}
+
+.prose img {
+  border-radius: 24px;
+  margin: 3rem auto;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+.prose ul, .prose ol {
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+
+.prose li {
+  margin-bottom: 0.75rem;
+}
+
+.prose strong {
+  color: #191f28;
+  font-weight: 700;
+}
+
+.dark .prose {
+  color: #d1d5db;
+}
+
+.dark .prose h2, .dark .prose h3, .dark .prose strong {
+  color: #f9fafb;
+}
+
+.dark .prose blockquote {
+  background-color: #1a1a1a;
+  color: #9ca3af;
+}
+
+.dark .prose code {
+  background-color: #2d2d2d;
 }
